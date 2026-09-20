@@ -1,8 +1,8 @@
 # Machine Status
 
 Shows battery charge, used memory, and used local storage for connected BB
-machines in a sidebar Machine status disclosure. Choose one or more metrics in
-the **Visible metrics** setting. Storage represents the writable system-data
+machines in a sidebar Machine status disclosure. Choose one or more metrics with
+the Battery, Memory, and Storage checkboxes. Storage represents the writable system-data
 volume (the Data volume on modern macOS).
 
 The server polls once a minute and refreshes the interface when a metric's

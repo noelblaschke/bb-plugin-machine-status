@@ -109,10 +109,10 @@ function SidebarMachineStatus() {
   const lowBatteryThreshold = typeof values?.lowBatteryThreshold === "number" ? values.lowBatteryThreshold : 20;
   const highMemoryThreshold = typeof values?.highMemoryThreshold === "number" ? values.highMemoryThreshold : 90;
   const highStorageThreshold = typeof values?.highStorageThreshold === "number" ? values.highStorageThreshold : 90;
-  const selectedMetrics = typeof values?.visibleMetrics === "string" ? values.visibleMetrics.split(",") : ["battery", "memory", "storage"];
-  const showBattery = selectedMetrics.includes("battery");
-  const showMemory = selectedMetrics.includes("memory");
-  const showStorage = selectedMetrics.includes("storage");
+  const showBattery = values?.showBattery !== false;
+  const showMemory = values?.showMemory !== false;
+  const showStorage = values?.showStorage !== false;
+  const selectedMetrics = [showBattery && "battery", showMemory && "memory", showStorage && "storage"].filter((metric): metric is string => Boolean(metric));
   const metricLabel = selectedMetrics.length === 1 ? selectedMetrics[0] : "machine";
   const loadingLabel = `Loading ${metricLabel} status…`;
   const visibleMachines = hideUnavailableMachines ? machines.filter((machine) =>

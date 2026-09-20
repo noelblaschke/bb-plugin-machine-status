@@ -5,7 +5,7 @@ each connected machine's battery charge, used memory, and used local storage.
 
 By default, connected machines without a selected status are hidden. You can
 show them from the plugin settings when you need to see every connected machine.
-Choose one or more metrics from the validated **Visible metrics** setting.
+Choose one or more metrics with the Battery, Memory, and Storage checkboxes.
 Each machine's battery status turns red when it is at or below the configurable
 low-battery threshold (20% by default).
 Memory and storage status turn red when their used percentage reaches their

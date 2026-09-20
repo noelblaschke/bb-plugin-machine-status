@@ -38,7 +38,7 @@ function sleep(milliseconds: number, signal: AbortSignal): Promise<void> {
 }
 
 export default function plugin(bb: BbPluginApi) {
-  bb.settings.define({
+  const settings = bb.settings.define({
     hideUnavailableMachines: {
       type: "boolean",
       label: "Hide machines without selected status",
@@ -66,13 +66,20 @@ export default function plugin(bb: BbPluginApi) {
       experimental_schema: z.number().int().min(0).max(100),
       default: 90,
     },
-    visibleMetrics: {
-      type: "select",
-      label: "Visible metrics",
-      description: "Choose which machine metrics appear in the sidebar.",
-      options: ["battery", "memory", "storage", "battery,memory", "battery,storage", "memory,storage", "battery,memory,storage"],
-      default: "battery,memory,storage",
-    },
+    showBattery: { type: "boolean", label: "Show battery", default: true },
+    showMemory: { type: "boolean", label: "Show memory", default: true },
+    showStorage: { type: "boolean", label: "Show storage", default: true },
+  });
+  settings.onChange((next, previous) => {
+    if (next.showBattery || next.showMemory || next.showStorage) return;
+    const restore = previous.showBattery
+      ? settings.experimental_set({ showBattery: true })
+      : previous.showMemory
+        ? settings.experimental_set({ showMemory: true })
+        : settings.experimental_set({ showStorage: true });
+    void restore.catch((error) => {
+      bb.log.warn(`At least one visible metric is required: ${error instanceof Error ? error.message : String(error)}`);
+    });
   });
 
   const host = bb.hosts.experimental_client({ contract: hostContract });
